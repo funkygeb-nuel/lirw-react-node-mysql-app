@@ -10,11 +10,8 @@ phases:
   build:
     commands:
       - echo Building frontend
-      - cd frontend && npm run build
+      - npm run build --prefix frontend
       - echo Build complete
-  post_build:
-    commands:
-      - ls frontend/dist
 artifacts:
   files:
     - '**/*'
