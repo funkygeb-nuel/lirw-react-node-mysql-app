@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoodHaven Furniture</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f9f7f4; color: #1a1a1a; }
+.shop { max-width: 900px; margin: 0 auto; padding: 1rem 1.5rem; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e5e0d8; margin-bottom: 1.5rem; }
+.nav-brand { font-size: 20px; font-weight: 500; color: #1a1a1a; }
+.nav-brand span { color: #8B6F47; }
+.cart-btn { position: relative; background: transparent; border: 1px solid #ccc; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 14px; color: #1a1a1a; display: flex; align-items: center; gap: 6px; }
+.cart-btn:hover { background: #f0ede8; }
+.cart-count { background: #8B6F47; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+.hero { background: #f0ede8; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.hero-text h1 { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+.hero-text p { color: #666; font-size: 15px; line-height: 1.6; }
+.hero-badge { background: #F5EDE0; color: #6B4F2A; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; white-space: nowrap; border: 1px solid #e0d0b8; }
+.section-title { font-size: 16px; font-weight: 500; margin-bottom: 1rem; }
+.products { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 2rem; }
+.product-card { background: #fff; border: 1px solid #e5e0d8; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+.product-card:hover { border-color: #8B6F47; }
+.product-img { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 48px; background: #f9f7f4; }
+.product-info { padding: 12px; }
+.product-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.product-desc { font-size: 12px; color: #888; margin-bottom: 8px; line-height: 1.4; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-size: 15px; font-weight: 500; color: #6B4F2A; }
+.add-btn { background: #8B6F47; color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
+.add-btn:hover { background: #7A6040; }
+.cart-section { background: #f0ede8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; display: none; }
+.cart-section.visible { display: block; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #e5e0d8; font-size: 14px; }
+.cart-item:last-child { border-bottom: none; }
+.remove-btn { background: none; border: none; color: #aaa; cursor: pointer; font-size: 18px; padding: 0 4px; }
+.remove-btn:hover { color: #c0392b; }
+.cart-total { display: flex; justify-content: space-between; font-weight: 500; padding-top: 12px; font-size: 15px; }
+.order-form { background: #fff; border: 1px solid #e5e0d8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.form-group label { font-size: 13px; color: #666; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; background: #fff; color: #1a1a1a; }
+.form-group textarea { height: 70px; resize: none; }
+.checkout-btn { width: 100%; background: #8B6F47; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 4px; }
+.checkout-btn:hover { background: #7A6040; }
+.checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
+.success-banner { background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 8px; padding: 1.5rem; text-align: center; display: none; }
+.success-banner.visible { display: block; }
+.success-banner p { color: #2e7d32; font-size: 15px; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="shop">
+  <nav class="nav">
+    <div class="nav-brand"><span>Wood</span>Haven Furniture</div>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Cart <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Craft your perfect space</h1>
+      <p>Handcrafted furniture built to last.<br>Free delivery on orders over £500.</p>
+    </div>
+    <div class="hero-badge">🚚 Free delivery</div>
+  </div>
+
+  <p class="section-title">Our collection</p>
+  <div class="products" id="products"></div>
+
+  <div class="cart-section" id="cart-section">
+    <p class="section-title">🛍️ Your cart</p>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total"></div>
+  </div>
+
+  <div class="order-form" id="order-form">
+    <p class="section-title">📋 Delivery details</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First name</label>
+        <input type="text" id="fname" placeholder="Emma" />
+      </div>
+      <div class="form-group">
+        <label>Last name</label>
+        <input type="text" id="lname" placeholder="Johnson" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email address</label>
+      <input type="email" id="email" placeholder="emma@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Delivery address</label>
+      <input type="text" id="address" placeholder="12 Maple Street, London, EC1A 1BB" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Delivery date</label>
+        <input type="date" id="delivery-date" />
+      </div>
+      <div class="form-group">
+        <label>Time slot</label>
+        <select id="time-slot">
+          <option>Morning (8am–12pm)</option>
+          <option>Afternoon (12pm–5pm)</option>
+          <option>Evening (5pm–8pm)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Special instructions</label>
+      <textarea id="notes" placeholder="e.g. Leave at back door, assembly required..."></textarea>
+    </div>
+    <button class="checkout-btn" id="checkout-btn" onclick="placeOrder()" disabled>
+      Place order
+    </button>
+  </div>
+
+  <div class="success-banner" id="success-banner">
+    <p id="success-msg"></p>
+  </div>
+</div>
+
+<script>
+const products = [
+  { id: 1, name: 'Oslo Sofa', desc: '3-seater, premium linen fabric', price: 849, icon: '🛋️' },
+  { id: 2, name: 'Nordic Dining Table', desc: 'Solid oak, seats 6', price: 649, icon: '🪑' },
+  { id: 3, name: 'Haven Bed Frame', desc: 'King size, walnut finish', price: 549, icon: '🛏️' },
+  { id: 4, name: 'Study Desk', desc: 'Compact with storage', price: 299, icon: '🪵' },
+  { id: 5, name: 'Arco Bookshelf', desc: 'Adjustable shelves, pine', price: 349, icon: '📚' },
+  { id: 6, name: 'Loft Coffee Table', desc: 'Glass top, steel legs', price: 249, icon: '☕' },
+];
+
+let cart = [];
+
+function renderProducts() {
+  document.getElementById('products').innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img">${p.icon}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <span class="product-price">£${p.price.toLocaleString()}</span>
+          <button class="add-btn" onclick="addToCart(${p.id})">Add</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  const existing = cart.find(c => c.id === id);
+  existing ? existing.qty++ : cart.push({ ...product, qty: 1 });
+  updateCart();
+  document.getElementById('cart-section').classList.add('visible');
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  updateCart();
+  if (!cart.length) document.getElementById('cart-section').classList.remove('visible');
+}
+
+function updateCart() {
+  document.getElementById('cart-count').textContent = cart.reduce((a, c) => a + c.qty, 0);
+  const total = cart.reduce((a, c) => a + c.price * c.qty, 0);
+  document.getElementById('cart-items').innerHTML = cart.map(c => `
+    <div class="cart-item">
+      <span>${c.icon} ${c.name}${c.qty > 1 ? ' ×' + c.qty : ''}</span>
+      <span style="display:flex;align-items:center;gap:8px;">
+        <span style="color:#666">£${(c.price * c.qty).toLocaleString()}</span>
+        <button class="remove-btn" onclick="removeFromCart(${c.id})">×</button>
+      </span>
+    </div>
+  `).join('');
+  document.getElementById('cart-total').innerHTML = cart.length ? `<span>Total</span><span>£${total.toLocaleString()}</span>` : '';
+  document.getElementById('checkout-btn').disabled = cart.length === 0;
+}
+
+function toggleCart() {
+  if (cart.length) document.getElementById('cart-section').classList.toggle('visible');
+}
+
+function placeOrder() {
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const address = document.getElementById('address').value.trim();
+  if (!fname || !email || !address) { alert('Please fill in your name, email, and address.'); return; }
+  const total = cart.reduce((a, c) => a + c.price * c.qty, 0);
+  const items = cart.map(c => c.name).join(', ');
+  document.getElementById('order-form').style.display = 'none';
+  document.getElementById('cart-section').style.display = 'none';
+  const banner = document.getElementById('success-banner');
+  document.getElementById('success-msg').innerHTML = `✅ Order confirmed!<br><strong>${fname}</strong>, your order has been placed.<br>Items: ${items}<br>Total: <strong>£${total.toLocaleString()}</strong><br>Confirmation sent to <strong>${email}</strong>`;
+  banner.classList.add('visible');
+  cart = [];
+}
+
+const d = new Date(); d.setDate(d.getDate() + 3);
+document.getElementById('delivery-date').value = d.toISOString().split('T')[0];
+renderProducts();
+</script>
+</body>
+</html>

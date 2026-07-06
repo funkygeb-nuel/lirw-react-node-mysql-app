@@ -4,17 +4,14 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing dependencies
-      - npm install --prefix frontend
+      - echo Installing backend dependencies
       - npm install --prefix backend
   build:
     commands:
-      - echo Building frontend
-      - CI=false npm run build --prefix frontend
-      - ls frontend/dist
+      - echo Build complete
   post_build:
     commands:
-      - echo Build complete
+      - echo Done
 artifacts:
   files:
     - '**/*'
