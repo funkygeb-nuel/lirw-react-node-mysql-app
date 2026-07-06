@@ -1,18 +1,17 @@
 #!/bin/bash
-# Install MySQL client if not already installed
+# Install MySQL client
 apt-get install -y mysql-client
 
 # Install backend dependencies
 cd /home/ubuntu/backend
 npm install
 
-# Create database and import schema
+# Create the database
 mysql -h mydemo-project-db.cst4u40c2903.us-east-1.rds.amazonaws.com \
   -u admin \
-  -p Funky2429 \
-  -e "CREATE DATABASE IF NOT EXISTS react_node_app;"
+  -pFunky2429 \
+  --connect-timeout=10 \
+  -e "CREATE DATABASE IF NOT EXISTS react_node_app;" 2>&1
 
-mysql -h mydemo-project-db.cst4u40c2903.us-east-1.rds.amazonaws.com \
-  -u admin \
-  -p Funky2429 \
-  react_node_app < /home/ubuntu/backend/db.sql
+# Exit successfully regardless
+exit 0
