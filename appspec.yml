@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /index.html
+  - source: /frontend/dist
     destination: /var/www/html
     overwrite: yes
   - source: /backend
