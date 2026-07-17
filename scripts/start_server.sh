@@ -2,4 +2,4 @@
 cd /home/ubuntu/backend
 npm start > /var/log/backend.log 2>&1 &
 disown
-exit 0
+exit 1
